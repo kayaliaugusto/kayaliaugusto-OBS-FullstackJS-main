@@ -1,0 +1,157 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-image: url(bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+h1, h2 {
+    color: hsl(0, 0%, 100%);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Regra geral para todas as seções, mas com max-width ajustado */
+section {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 25px; /* Espaço entre as seções quando empilhadas */
+    width: 100%;
+    max-width: 550px; /* Ajustado para caber nas colunas */
+    box-sizing: border-box;
+}
+
+/* Remove a margem inferior da última seção dentro de um container específico */
+.right-column-content section:last-child {
+    margin-bottom: 0;
+}
+
+p {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #ffffff;
+    min-width: 80px;
+}
+
+input[type="text"],
+input[type="number"] {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px ;
+    opacity: 22%;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #db3434;
+}
+
+button {
+    background-color: #db3434;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    min-width: 100px;
+}
+
+button:hover {
+    background-color: #b92929;
+    transform: translateY(-2px);
+}
+
+ul#team-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+    width: 100%;
+}
+
+ul#team-list li {
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #000000;
+    transition: background-color 0.2s ease;
+}
+
+ul#team-list li:hover {
+    background-color: #e0e6e7;
+}
+
+/* Layout de duas colunas principais */
+#main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 25px; /* Espaço entre as duas colunas */
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 20px;
+}
+
+/* Estilo para os itens que são as colunas (seja section ou div) */
+.column-item {
+    flex-basis: calc(50% - 12.5px); /* Divide o espaço e subtrai metade do gap */
+    min-width: 300px;
+    max-width: 580px; /* Ajuste para ter espaço para o gap */
+    display: flex;
+    flex-direction: column; /* Conteúdo interno de cada coluna se organiza verticalmente */
+}
+
+/* Faz o conteúdo da coluna da direita (Remover e Time) se empilhar verticalmente */
+.right-column-content {
+    display: flex;
+    flex-direction: column;
+    /* max-width e min-width já vêm de .column-item */
+}
+
+/* Ajustes para elementos dentro das colunas */
+.column-item p {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.column-item p label,
+.column-item p input,
+.column-item p button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.column-item p label {
+    min-width: unset;
+    margin-bottom: 5px;
+}

@@ -4,10 +4,24 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vagas de Emprego</title>
+  <title>Cadastro de Devs</title>
+  <link rel="stylesheet" href="script.css"> <script src="./style.js" defer></script>
 </head>
 <body>
-  <h1>Vagas de Emprego</h1>
-  <script src="./style.js"></script>
+  <h1>Cadastro de Desenvolvedores</h1>
+  <hr>
+
+  <h2>Cadastrar Novo Desenvolvedor</h2>
+
+  <form id="devForm">
+    <label for="fullname">Nome Completo:</label>
+    <input type="text" name="fullname" id="fullname"><br><br>
+    
+    <label>Tecnologias:</label><br>
+    <button id="addTechBtn" type="button">Adicionar Nova</button>
+    <ul id="stackInputs"></ul>
+    <br>
+    <button type="submit">Cadastrar</button>
+  </form>
 </body>
 </html>

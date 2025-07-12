@@ -1,259 +1,82 @@
-const vagas = []
-
-
-function listarVagas() {
-  const vagasEmTexto = vagas.reduce((textoFinal, vaga, indice) => {
-    textoFinal += indice + ". "
-    textoFinal += vaga.nome
-    textoFinal += " (" + vaga.candidatos.length + " candidatos)\n"
-    return textoFinal
-  }, "")
-
-  alert(vagasEmTexto)
+function createLabel(text, htmlFor) {
+  const label = document.createElement('label')
+  label.htmlFor = htmlFor
+  label.innerText = text
+  return label
 }
 
+function createInput(id, value, name, type = 'text', placeholder = '') {
+  const input = document.createElement('input')
+  input.id = id
+  input.value = value
+  input.name = name
+  input.type = type
+  input.placeholder = placeholder
+  return input
+}
+const addTechBtn = document.getElementById('addTechBtn')
+const form = document.getElementById('devForm')
+const developers = []
+let inputRows = 0
+addTechBtn.addEventListener('click', function (ev) {
+  const stackInputs = document.getElementById('stackInputs')
 
-function novaVaga() {
-  const nome = prompt("Informe um nome para a vaga:")
-  const descricao = prompt("Informe um descrição para a vaga:")
-  const dataLimite = prompt("Informe um data limite (dd/mm/aaaa) para a vaga:")
+  const newRow = document.createElement('li')
+  const rowIndex = inputRows
+  inputRows++
+  newRow.id = 'inputRow-' + rowIndex
+  newRow.className = 'inputRow'
 
-  const confirmacao = confirm(
-    "Deseja criar uma nova vaga com essas informações?\n" +
-    "Nome: " + nome + "\nDescrição: " + descricao + "\nData limite: " + dataLimite
+  const techNameLabel = createLabel('Nome: ', 'techName-' + rowIndex)
+  const techNameInput = createInput('techName-' + rowIndex, null, 'techName')
+
+  const expLabel = createLabel('Experiência: ')
+  const id1 = 'expRadio-' + rowIndex + '.1'
+  const expRadio1 = createInput(id1, '0-2 anos', 'techExp-' + rowIndex, 'radio')
+  const expLabel1 = createLabel('0-2 anos', id1)
+  const id2 = 'expRadio-' + rowIndex + '.2'
+  const expRadio2 = createInput(id2, '3-4 anos', 'techExp-' + rowIndex, 'radio')
+  const expLabel2 = createLabel('3-4 anos', id2)
+  const id3 = 'expRadio-' + rowIndex + '.3'
+  const expRadio3 = createInput(id3, '5+ anos', 'techExp-' + rowIndex, 'radio')
+  const expLabel3 = createLabel('5+ anos', id3)
+
+  const removeRowBtn = document.createElement('button')
+  removeRowBtn.type = 'button'
+  removeRowBtn.innerText = 'Remover'
+  removeRowBtn.addEventListener('click', function () {
+    stackInputs.removeChild(newRow)
+  })
+
+
+  newRow.append(
+    techNameLabel, techNameInput, expLabel, expRadio1, expLabel1, expRadio2, expLabel2, expRadio3, expLabel3, removeRowBtn
   )
 
-  if (confirmacao) {
-    const novaVaga = { nome, descricao, dataLimite, candidatos: [] }
-    vagas.push(novaVaga)
-    alert("Vaga criada.")
-  }
-}
+  stackInputs.appendChild(newRow)
+})
+form.addEventListener('submit', function (ev) {
+  ev.preventDefault()
 
+  const fullnameInput = document.getElementById('fullname')
+  const inputRows = document.querySelectorAll('.inputRow')
 
-function exibirVaga() {
-  const indice = prompt("Informe o índice da vaga que deseja exibir:")
-  const vaga = vagas[indice]
+  let technologies = []
+  inputRows.forEach(function (row) {
+    // #rowId input[name="techName"]
+    const techName = document.querySelector('#' + row.id + ' input[name="techName"]').value
+    const techExp = document.querySelector('#' + row.id + ' input[type="radio"]:checked').value
+    technologies.push({ name: techName, exp: techExp })
+  })
 
-  const candidatosEmTexto = vaga.candidatos.reduce((textoFinal, candidato) => textoFinal + "\n - " + candidato, "")
+  const newDev = { fullname: fullnameInput.value, technologies: technologies }
+  developers.push(newDev)
+  alert('Dev cadastrado com sucesso!')
 
-  alert(
-    "Vaga nº " + indice +
-    "\nNome: " + vaga.nome +
-    "\nDescrição: " + vaga.descricao +
-    "\nData limite: " + vaga.dataLimite +
-    "\nQuantidade de candidatos: " + vaga.candidatos.length +
-    "\nCandidatos inscritos:" + candidatosEmTexto
-  )
-}
+  fullnameInput.value = ''
+  inputRows.forEach(function (row) {
+    row.remove()
+  })
 
-
-function inscreverCandidato() {
-  const candidato = prompt("Informe o nome do(a) candidato(a):")
-  const indice = prompt("Informe o índice da vaga para a qual o(a) candidato(a) deseja se inscrever:")
-  const vaga = vagas[indice]
-
-  const confirmacao = confirm(
-    "Deseja inscrever o candidato " + candidato + " na vaga " + indice + "?\n" +
-    "Nome: " + vaga.nome + "\nDescrição: " + vaga.descricao + "\nData limite: " + vaga.dataLimite
-  )
-
-  if (confirmacao) {
-    vaga.candidatos.push(candidato)
-    alert("Inscrição realizada")
-  }
-}
-
-
-function excluirVaga() {
-  const indice = prompt("Informe o índice da vaga que deseja excluir:")
-  const vaga = vagas[indice]
-
-  const confirmacao = confirm(
-    "Tem certeza que deseja excluir a vaga " + indice + "?\n" +
-    "Nome: " + vaga.nome + "\nDescrição: " + vaga.descricao + "\nData limite: " + vaga.dataLimite
-  )
-
-  if (confirmacao) {
-    vagas.splice(indice, 1)
-    alert("Vaga excluída.")
-  }
-}
-
-
-function exibirMenu() {
-  const opcao = prompt(
-    "Cadastro de Vagas de Emprego" +
-    "\n\nEscolha uma das opções" +
-    "\n1. Listar vagas disponíveis" +
-    "\n2. Criar uma nova vaga" +
-    "\n3. Visualizar uma vaga" +
-    "\n4. Inscrever um(a) candidato(a)" +
-    "\n5. Excluir uma vaga" +
-    "\n6. Sair"
-  )
-
-  return opcao
-}
-
-
-
-function executar() {
-  let opcao = ""
-
-  do {
-    opcao = exibirMenu()
-
-    switch (opcao) {
-      case "1":
-        listarVagas()
-        break
-      case "2":
-        novaVaga()
-        break
-      case "3":
-        exibirVaga()
-        break
-      case "4":
-        inscreverCandidato()
-        break
-      case "5":
-        excluirVaga()
-      case "6":
-        alert("Saindo...")
-        break
-      default:
-        alert("Opção inválida.")
-    }
-
-  } while (opcao !== "6");
-}
-
-executar()
-
-
-
-function listarVagas() {
-  const vagasEmTexto = vagas.reduce((textoFinal, vaga, indice) => {
-    textoFinal += indice + ". "
-    textoFinal += vaga.nome
-    textoFinal += " (" + vaga.candidatos.length + " candidatos)\n"
-    return textoFinal
-  }, "")
-
-  alert(vagasEmTexto)
-}
-
-
-function novaVaga() {
-  const nome = prompt("Informe um nome para a vaga:")
-  const descricao = prompt("Informe um descrição para a vaga:")
-  const dataLimite = prompt("Informe um data limite (dd/mm/aaaa) para a vaga:")
-
-  const confirmacao = confirm(
-    "Deseja criar uma nova vaga com essas informações?\n" +
-    "Nome: " + nome + "\nDescrição: " + descricao + "\nData limite: " + dataLimite
-  )
-
-  if (confirmacao) {
-    const novaVaga = { nome, descricao, dataLimite, candidatos: [] }
-    vagas.push(novaVaga)
-    alert("Vaga criada.")
-  }
-}
-
-
-function exibirVaga() {
-  const indice = prompt("Informe o índice da vaga que deseja exibir:")
-  const vaga = vagas[indice]
-
-  const candidatosEmTexto = vaga.candidatos.reduce((textoFinal, candidato) => textoFinal + "\n - " + candidato, "")
-
-  alert(
-    "Vaga nº " + indice +
-    "\nNome: " + vaga.nome +
-    "\nDescrição: " + vaga.descricao +
-    "\nData limite: " + vaga.dataLimite +
-    "\nQuantidade de candidatos: " + vaga.candidatos.length +
-    "\nCandidatos inscritos:" + candidatosEmTexto
-  )
-}function inscreverCandidato() {
-  const candidato = prompt("Informe o nome do(a) candidato(a):")
-  const indice = prompt("Informe o índice da vaga para a qual o(a) candidato(a) deseja se inscrever:")
-  const vaga = vagas[indice]
-
-  const confirmacao = confirm(
-    "Deseja inscrever o candidato " + candidato + " na vaga " + indice + "?\n" +
-    "Nome: " + vaga.nome + "\nDescrição: " + vaga.descricao + "\nData limite: " + vaga.dataLimite
-  )
-
-  if (confirmacao) {
-    vaga.candidatos.push(candidato)
-    alert("Inscrição realizada")
-  }
-}
-function excluirVaga() {
-  const indice = prompt("Informe o índice da vaga que deseja excluir:")
-  const vaga = vagas[indice]
-
-  const confirmacao = confirm(
-    "Tem certeza que deseja excluir a vaga " + indice + "?\n" +
-    "Nome: " + vaga.nome + "\nDescrição: " + vaga.descricao + "\nData limite: " + vaga.dataLimite
-  )
-
-  if (confirmacao) {
-    vagas.splice(indice, 1)
-    alert("Vaga excluída.")
-  }
-}
-
-function exibirMenu() {
-  const opcao = prompt(
-    "Cadastro de Vagas de Emprego" +
-    "\n\nEscolha uma das opções" +
-    "\n1. Listar vagas disponíveis" +
-    "\n2. Criar uma nova vaga" +
-    "\n3. Visualizar uma vaga" +
-    "\n4. Inscrever um(a) candidato(a)" +
-    "\n5. Excluir uma vaga" +
-    "\n6. Sair"
-  )
-
-  return opcao
-}
-
-
-function executar() {
-  let opcao = ""
-
-  do {
-    opcao = exibirMenu()
-
-    switch (opcao) {
-      case "1":
-        listarVagas()
-        break
-      case "2":
-        novaVaga()
-        break
-      case "3":
-        exibirVaga()
-        break
-      case "4":
-        inscreverCandidato()
-        break
-      case "5":
-        excluirVaga()
-      case "6":
-        alert("Saindo...")
-        break
-      default:
-        alert("Opção inválida.")
-    }
-
-  } while (opcao !== "6");
-}
-
-executar()
-
-
+  console.log(developers)
+})
